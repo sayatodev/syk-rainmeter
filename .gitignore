@@ -1,1 +1,22 @@
+# Private / local-only config
+**/Secret.inc
+
+# Old local backups and scratch copies
 @Backup/
+
+# Runtime cache & generated state
+NowPlaying/title.txt
+NowPlaying/artist.txt
+NowPlaying/length.txt
+NowPlaying/thumb.txt
+NowPlaying/nowplaying-cache.txt
+NotionAssignmentsGlass/@Resources/Cache/
+
+# Local build outputs for NowPlayingHelper
+NowPlayingHelper/bin/
+NowPlayingHelper/obj/
+NowPlaying/*.pdb
+
+.vs/
+*.user
+*.suo
