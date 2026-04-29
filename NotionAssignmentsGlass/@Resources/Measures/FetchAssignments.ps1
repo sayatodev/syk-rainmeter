@@ -55,6 +55,7 @@ function Format-Meta {
         [string]$Status
     )
 
+    $jpWeekdays = @('日', '月', '火', '水', '木', '金', '土')
     $dayDiff = [int](($DueDate.Date - (Get-Date).Date).TotalDays)
     if ($dayDiff -le 0) {
         $relative = 'Today'
@@ -64,18 +65,20 @@ function Format-Meta {
         $relative = "$dayDiff days left"
     }
 
+    $weekday = $jpWeekdays[[int]$DueDate.DayOfWeek]
+    $dueText = '{0}月{1}日 ({2})' -f $DueDate.Month, $DueDate.Day, $weekday
     if ($HasTime) {
-        $dueText = $DueDate.ToString('ddd, MMM dd · hh:mm tt')
-    } else {
-        $dueText = $DueDate.ToString('ddd, MMM dd')
+        $ampm = if ($DueDate.Hour -lt 12) { '午前' } else { '午後' }
+        $timeText = '{0} {1}:{2:00}' -f $ampm, ((($DueDate.Hour + 11) % 12) + 1), $DueDate.Minute
+        $dueText = $dueText + ' ' + $timeText
     }
 
     $parts = [System.Collections.Generic.List[string]]::new()
     $parts.Add($dueText)
+    if ($Priority) { $parts.Add("優先度 $Priority") }
     $parts.Add($relative)
-    if ($Priority) { $parts.Add($Priority) }
     if ($Status -and $Status -ne '未着手') { $parts.Add($Status) }
-    return ($parts -join '  ')
+    return ($parts -join ' ・ ')
 }
 
 try {

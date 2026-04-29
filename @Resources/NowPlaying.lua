@@ -114,7 +114,8 @@ local function update_progress_ui()
     local time_text = ''
 
     if duration > 0 then
-        local progress_width = tonumber(SKIN:GetVariable('ProgressBarWidth', '0')) or 0
+        local skin_width = tonumber(SKIN:GetVariable('SkinWidth', '500')) or 500
+        local progress_width = math.max(0, skin_width - 50)
         width = math.floor((position / duration) * progress_width + 0.5)
         time_text = format_time(position) .. ' / ' .. format_time(duration)
     end
